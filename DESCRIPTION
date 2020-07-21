@@ -1,0 +1,14 @@
+Package: nwblastarca
+Title: Northwest recreational bioeconomic model
+Version: 0.0.0.9000
+Authors@R: 
+    person("Josh", "Nowlis", role = c("aut"))
+    person("Megan", "Stachura", role = c("aut"))
+    person("Leif", "Anderson", role = c("aut"))
+    person("Allen", "Chen", email = "allen.chen@noaa.gov", 
+    role = c("aut", "cre"))
+Description: Northwest recreational bioeconomic model
+License: Do not distribute
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
