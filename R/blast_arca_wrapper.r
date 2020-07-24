@@ -1,4 +1,4 @@
-blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
+blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, 
     dynamic.stocks) {
     #' blast_arca_wrapper
     #'
@@ -17,9 +17,7 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
     #' @importFrom magrittr %>%
     #' @examples
     #'
-        
-    setwd(rootdir)
-
+    
     #Likely these should go as inputs, leave for now.
     # 1=female, 2=male
     sexes <- c(1,2)

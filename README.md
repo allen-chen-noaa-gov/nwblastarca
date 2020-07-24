@@ -24,14 +24,12 @@ Run through the wrapper function (still in progress):
 
     > library(nwblastarca)
 
-    > rootdir <- "U:\\NWFSC_data_code\\BLAST\\" 
-
     > firstyear <- 2017
     > forecastyrs <- 2
     > dynamic.stocks <- c('WA.OR.lingcod')
 
     > blast_arca_wrapper(firstyear = firstyear, forecastyrs = forecastyrs,
-        rootdir = rootdir, dynamic.stocks)
+        dynamic.stocks = dynamic.stocks)
 
 Currently outputs numbers at age and recreational catches for the dynamic 
 species.
