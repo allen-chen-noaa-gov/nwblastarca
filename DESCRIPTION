@@ -8,6 +8,12 @@ Authors@R:
     person("Allen", "Chen", email = "allen.chen@noaa.gov", 
     role = c("aut", "cre"))
 Description: Northwest recreational bioeconomic model
+Imports:
+    reshape2,
+    data.table,
+    dplyr,
+    magrittr,
+    pscl
 License: Do not distribute
 Encoding: UTF-8
 LazyData: true

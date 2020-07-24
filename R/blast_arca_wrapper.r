@@ -7,16 +7,17 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
     #' @param MCMC Number of monte carlo runs per scenario
     #' @param firstyear First year of simulation
     #' @param forecastyrs Number of forecast years
-    #' @param footdir Working directory
+    #' @param rootdir Working directory
+    #' @param dynamic.stocks Names of stocks that change over time
     #'
-    #' @return dataCompile: a data matrix
+    #' @return tsout Time series of fisher catches, stock status, over forecast
+    #' years
     #' @export
+    #' @importFrom dplyr summarise group_by n
+    #' @importFrom magrittr %>%
     #' @examples
     #'
-    
-    #make this a dependency
-    library(data.table)           
-    # handy data table package (ALK) >> install.packages("data.table") <<
+        
     setwd(rootdir)
 
     #Likely these should go as inputs, leave for now.
@@ -37,7 +38,14 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
     list2env(stockvars, environment())
     
     # Load and process key data
+    load(system.file("extdata", "Regulations.RData", package = "nwblastarca"))
+    load(system.file("extdata", "CPT CAL.RData", package = "nwblastarca"))
+    load(system.file("extdata", "Utility.RData", package = "nwblastarca"))
     load(system.file("extdata", "Structural.RData", package = "nwblastarca"))
+    
+    #sel here is wrong, need to change data
+    rec.sel.at.length$PS.lingcod <- c(rec.sel.at.length$PS.lingcod, rep(0,6))
+
     areas <- names(stocks.rec.catch.by.area)
     subareas <- vector("list",length(areas))
     subareas <- lapply(areas, function(x) names(stocks.rec.catch.by.area[[x]]))
@@ -148,7 +156,7 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
     # utility vector and trips taken
     utility.all.subareas <- NULL
     utility.labels <- NULL
-    ################################## trips!!!!
+    dynremoveout <- NULL
     
     ## Sub loop: time
     #Define time references
@@ -180,6 +188,11 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
     ## Branch: add recruits if recruitment season (for each dynamic species)
     for(stock in dynamic.stocks) {
         if(currmonth %in% recrmonths[[stock]] & timestep!=1) {
+            
+            LnR0 <- NULL
+            #double check this is correct
+            LnR0[[stock]] <- 8.11666
+            
             recrage <- ifelse(currmonth>=spawnmonth[[stock]],0,1)            
             # THIS CODE SPECIFIC TO SS 3.30!
             Recr[[stock]]$Recr[which(Recr[[stock]]$Year==(curryear-recrage))] <-
@@ -292,26 +305,20 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
     ## End commercial fishing and natural mortality
 
     init.choices.by.waveareaboattype <- 100       
-    load(system.file("extdata", "Regulations.RData", package = "nwblastarca"))
-    load(system.file("extdata", "CPT CAL.RData", package = "nwblastarca"))
-    load(system.file("extdata", "Utility.RData", package = "nwblastarca"))
-
-    # Create data frame to hold the number of choice occasions by Year, Wave,  
-    # Area, and BoatType as well as number of trips
-    choice.occasions <- cbind(past.trips.by.yearwaveareaboattype, 
-    Choices=rep(0,nrow(past.trips.by.yearwaveareaboattype)))
-
-    # Adjust the year so 1 is most recent, etc
-    choice.occasions$Year <- max(choice.occasions$Year) - 
-        choice.occasions$Year + 1
-
-    #sel here is wrong, need to change data
-    rec.sel.at.length$PS.lingcod <- c(rec.sel.at.length$PS.lingcod, rep(0,6))
 
     ## At the beginning of each year, calculate recreational trips by wave, 
     # area, boattype, subarea, and triptype
     if(currmonth==1) {
 
+    # Create data frame to hold the number of choice occasions by Year, Wave,  
+    # Area, and BoatType as well as number of trips
+    choice.occasions <- cbind(past.trips.by.yearwaveareaboattype, 
+    Choices=rep(0,nrow(past.trips.by.yearwaveareaboattype)))
+    
+    # Adjust the year so 1 is most recent, etc
+    choice.occasions$Year <- max(choice.occasions$Year) - 
+        choice.occasions$Year + 1
+        
     for (wave in 1:6) {
         for (area in areas) {
             for (boattype in boat.types) {
@@ -335,6 +342,7 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
                             area,
                             subarea,
                             boattype,
+                            boat.types,
                             triptype,
                             catch.per.trip.prob.all,
                             dynamic.stocks,
@@ -446,9 +454,7 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
             } # END boattype loop
         } # END area loop
     } # END wave loop
-    } # END beginning of year branch
-    ## End trip calculations
-
+    
     choice.years <- 1
     # Convert proportion of each activity into numbers using total trips taken
     choice.occasions$Choices[which(choice.occasions$Year %in% 
@@ -468,36 +474,54 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
         BoatType=choice.occasions$BoatType), 
         FUN=mean, na.rm=TRUE)
 
-    choice.occasions <- choice.occasions[order(choice.occasions$Wave, 
+    choice.occasions.choices <- choice.occasions[order(choice.occasions$Wave, 
         -xtfrm(choice.occasions$Area), 
         choice.occasions$BoatType),]
     
+    } # END beginning of year branch
+    ## End trip calculations
+
+    savedyn <- NULL
     saveall <- NULL
+    dyncatch <- NULL
+    dynremove <- NULL
     ## Calculate recreational catches (for all species) and mortality 
     #(for each dynamic species) MORE EFFICIENT?
     # Only at end of wave to avoid duplication
     if(waveT == (currmonth/2)) {
         for(area in fishing.areas) {
+        
+        savedyncount <- 1
+
             for (boattype in boat.types) {
+            
+                choiceiters <- round(choice.occasions$Choices[
+                    choice.occasions$Wave == waveT & 
+                    choice.occasions$Area == area &
+                    choice.occasions$BoatType == boattype]/
+                    length(sapply(trip.types.by.area[[area]], "[[", waveT)))
+                
                 for (subarea in subareas[[area]]) {
                     for (triptype in 
-                    trip.types.by.area[[area]][[subarea]][[wave]]) {
+                    trip.types.by.area[[area]][[subarea]][[waveT]]) {
+                    
+                        savecatch <- NULL
+                        saveutil <- NULL
+                        
                         if (choice.occasions$Choices[
-                        choice.occasions$Wave == wave & 
+                        choice.occasions$Wave == waveT & 
                         choice.occasions$Area == area &
                         choice.occasions$BoatType == boattype] != 0) {                   
-                        for (choice in 1:
-                        choice.occasions$Choices[choice.occasions$Wave == wave & 
-                        choice.occasions$Area == area &
-                        choice.occasions$BoatType == boattype]) { 
+                        for (choice in 1:choiceiters) { 
                         # Call function to draw catch from trip and report trip 
                         #characteristics
                         trip.info <- TripDetails(curryear,
                             currmonth,
-                            wave,
+                            waveT,
                             area,
                             subarea,
                             boattype,
+                            boat.types,
                             triptype,
                             catch.per.trip.prob.all,
                             dynamic.stocks,
@@ -527,19 +551,79 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
                             wa.lingcod.bottomfish.catch.per.trip.model,
                             wa.lingcod.salmon.catch.per.trip.model)
                         
-                        #saving all but for what? pull through next year
-    saveall[[wave]][[area]][[boattype]][[subarea]][[triptype]][[choice]] <- 
-        trip.info
-                        }
+                            if (choice == 1) {
+                            savecatch <- unlist(trip.info$catch, 
+                                recursive = FALSE)
+                            } else {
+                            savecatch <- mapply(c, savecatch, 
+                                unlist(trip.info$catch, recursive = FALSE),
+                                SIMPLIFY=FALSE)   
+                            }
+                            
+                            if (savedyncount == 1) {
+                            savedyn[[area]] <- unlist(trip.info$catch, 
+                                recursive = FALSE)[
+                                grepl(paste(sub('.*\\.', '', dynamic.stocks), 
+                                "kept", sep = "."), names(savecatch))]
+                            } else {  
+                            savedyn[[area]] <- mapply(c, savedyn[[area]], 
+                                unlist(trip.info$catch, recursive = FALSE)[
+                                grepl(paste(sub('.*\\.', '', dynamic.stocks), 
+                                "kept", sep = "."), 
+                                names(unlist(trip.info$catch, 
+                                    recursive = FALSE)))],
+                                SIMPLIFY=FALSE)
+                            }
+
+                            saveutil <- cbind(saveutil, trip.info$utility)
+                            savedyncount <- savedyncount + 1
+                            
                         } # END choice loop
+                        } 
+                    
+                saveall[[area]][[boattype]][[subarea]][[triptype]] <- 
+                    list(savecatch, saveutil)
+                    
                     } # END triptype loop
                 } # END subarea loop
             } # END boattype loop
         } # END area loop
         # Update NAL for dynamic stocks
+    
+    dyncatch <- data.frame(do.call(cbind, unlist(savedyn, recursive = FALSE)))
+    colnames(dyncatch) <- c("LBin", "Sex")
+
+    #NAL is in thousands! Because from SS
+    dynremove <- data.frame(dyncatch %>%
+        group_by(LBin, Sex) %>%
+        summarise(count = n()/1000))    
+        
     } # END end of wave branch
     ## End recreational catch section
-
+    
+    if (length(dynremove) > 0) {
+    
+    #already in nextmonth    
+    dynremove$Year <- nextyear
+    dynremove$Month <- nextmonth
+         
+    NAL[[stock]] <- merge(NAL[[stock]], dynremove, 
+        by = c("Year", "Month", "Sex", "LBin"),
+        all.x = TRUE, all.y = FALSE)
+  
+    NAL[[stock]]$count[is.na(NAL[[stock]]$count)] <- 0
+    
+    NAL[[stock]]$N <- as.list(unlist(NAL[[stock]]$N) - NAL[[stock]]$count)
+    
+    NAL[[stock]]$count <- NULL
+    
+    }
+    
+    # if (currmonth == 12) {
+    # browser()
+    # }
+    print(paste(curryear, currmonth))
+    
     ## Convert population numbers from length- to age-classes 
     #(for each dynamic species)
     for(stock in dynamic.stocks) {
@@ -592,9 +676,14 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, rootdir,
         } # END end of year branch
     } # END dynamic stock loop
     ## End ageing branch
-      
+    
+    dynremoveout[[as.character(curryear)]][[as.character(currmonth)]] <- 
+        dynremove
+    
     } ## End time loop
     
-    return(dataCompile)
+    tsout <- list(NAA, dynremoveout)
+    
+    return(tsout)
     
 }

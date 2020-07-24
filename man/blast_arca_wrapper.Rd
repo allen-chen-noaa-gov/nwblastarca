@@ -13,10 +13,13 @@ blast_arca_wrapper(MCMC = 1, firstyear, forecastyrs, rootdir, dynamic.stocks)
 
 \item{forecastyrs}{Number of forecast years}
 
-\item{footdir}{Working directory}
+\item{rootdir}{Working directory}
+
+\item{dynamic.stocks}{Names of stocks that change over time}
 }
 \value{
-dataCompile: a data matrix
+tsout Time series of fisher catches, stock status, over forecast
+years
 }
 \description{
 Wrapper function for recreational bioeconomic model

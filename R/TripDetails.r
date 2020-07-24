@@ -5,6 +5,7 @@ TripDetails <- function(curryear,
                         # Larger area definitions, OR or WA
                         subarea,
                         boattype,
+                        boat.types,
                         triptype,
                         catch.per.trip.prob.all,            
                         # Probability of number of fish caught per trip
@@ -57,6 +58,7 @@ TripDetails <- function(curryear,
     #' @param curryear Current year
     #'
     #' @return dataCompile: a data matrix
+    #' @import pscl
     #' @export
     #' @examples
     #'

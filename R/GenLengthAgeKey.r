@@ -8,6 +8,8 @@ GenLengthAgeKey <- function(numbersatage,    # Vector of current numbers at age
     #'
     #' @return tmp6 tmp6
     #' @export
+    #' @importFrom reshape2 melt dcast
+    #' @importFrom data.table data.table :=
     #' @examples
     #'
 
@@ -28,8 +30,8 @@ GenLengthAgeKey <- function(numbersatage,    # Vector of current numbers at age
   }
   
   # Now drop the counts column and reshape the data to long
-  tmp3 <- tmp2[,-which(names(tmp2)=="count")]
-  tmp4 <- reshape2:::melt.data.frame(tmp3,variable.name="length",id.vars="age")
+  tmp3 <- data.frame(tmp2[,-which(names(tmp2)=="count")])
+  tmp4 <- melt(tmp3,variable.name="length",id.vars="age")
   
   # Now generate probability distribution of ages at length.  
   #   Note: convert to data.table for fast and easy manipulation.
@@ -43,7 +45,7 @@ GenLengthAgeKey <- function(numbersatage,    # Vector of current numbers at age
   tmp5 <- as.data.frame(tmp5)                # Convert back to data frame
   
   # Now reshape to wide so that rows contain a probability distribution of ages for each length class.
-  tmp6 <- reshape2:::dcast(tmp5, length~age, value.var="prob")
+  tmp6 <- dcast(tmp5, length~age, value.var="prob")
   tmp6[,-1] <- tmp6[,-1][,order(as.numeric(names(tmp6)[-1]))]
   
   return(tmp6)

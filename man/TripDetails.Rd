@@ -11,6 +11,7 @@ TripDetails(
   area,
   subarea,
   boattype,
+  boat.types,
   triptype,
   catch.per.trip.prob.all,
   dynamic.stocks,

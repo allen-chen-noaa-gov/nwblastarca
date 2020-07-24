@@ -20,19 +20,21 @@ DrawCatchAll <- function(catch.per.trip,                         # Number of fis
     #' @examples
     #'
     
-  # Create a list to hold the kept and release catch for each stock
-  catch.info <- sapply(names(catch.per.trip), function(x) x=list(kept.lengths=NULL, kept.sexes=NULL, 
-                                                                 released.lengths=NULL, released.sexes=NULL),
-                       simplify=FALSE, USE.NAMES=TRUE)
+    # Create a list to hold the kept and release catch for each stock
+    catch.info <- sapply(names(catch.per.trip), 
+        function(x) x=list(kept.lengths=NULL, kept.sexes=NULL, 
+            released.lengths=NULL, released.sexes=NULL),
+            simplify=FALSE, USE.NAMES=TRUE)
   
-  # Calculate the total number of fish caught on this trip
-  total.catch <- Reduce("+", catch.per.trip)
-  
-  # If nothing was cuaght, no need to simulate the catch order
-  if(total.catch==0) return(catch.info)
-  
-  # Draw the order of the fish caught by stock  
-  catch.order <- sample(rep(names(catch.per.trip), unlist(catch.per.trip)), total.catch, replace=FALSE) 
+    # Calculate the total number of fish caught on this trip
+    total.catch <- Reduce("+", catch.per.trip)
+
+    # If nothing was cuaght, no need to simulate the catch order
+    if(total.catch==0) return(catch.info)
+
+    # Draw the order of the fish caught by stock  
+    catch.order <- sample(rep(names(catch.per.trip), unlist(catch.per.trip)), 
+        total.catch, replace=FALSE) 
   
   for(i in 1:total.catch) { # In order, assessing whether each fish is caught or discarded
     
