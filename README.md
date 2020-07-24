@@ -36,7 +36,5 @@ Run through the wrapper function (still in progress):
 Currently outputs numbers at age and recreational catches for the dynamic 
 species.
 
-![Numbers at age](https://nwcgit.nwfsc.noaa.gov/achen/nwblastarca/-/raw/master/
-inst/ms/NAA.png)
-![Recreational catches](https://nwcgit.nwfsc.noaa.gov/achen/nwblastarca/-/raw/
-master/inst/ms/reccatches.png)
+![Numbers at age](https://nwcgit.nwfsc.noaa.gov/achen/nwblastarca/-/raw/master/inst/ms/NAA.png)
+![Recreational catches](https://nwcgit.nwfsc.noaa.gov/achen/nwblastarca/-/raw/master/inst/ms/reccatches.png)
