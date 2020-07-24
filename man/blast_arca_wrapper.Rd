@@ -4,7 +4,7 @@
 \alias{blast_arca_wrapper}
 \title{blast_arca_wrapper}
 \usage{
-blast_arca_wrapper(MCMC = 1, firstyear, forecastyrs, rootdir, dynamic.stocks)
+blast_arca_wrapper(MCMC = 1, firstyear, forecastyrs, dynamic.stocks)
 }
 \arguments{
 \item{MCMC}{Number of monte carlo runs per scenario}
@@ -13,9 +13,9 @@ blast_arca_wrapper(MCMC = 1, firstyear, forecastyrs, rootdir, dynamic.stocks)
 
 \item{forecastyrs}{Number of forecast years}
 
-\item{rootdir}{Working directory}
-
 \item{dynamic.stocks}{Names of stocks that change over time}
+
+\item{rootdir}{Working directory}
 }
 \value{
 tsout Time series of fisher catches, stock status, over forecast
