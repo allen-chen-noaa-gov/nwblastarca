@@ -4,16 +4,30 @@
 \alias{LengthWeight}
 \title{LengthWeight}
 \usage{
-LengthWeight(length, sex, a.1, b.1, a.2, b.2, a.3, b.3)
+LengthWeight(lengthf, sex, a.1, b.1, a.2, b.2, a.3, b.3)
 }
 \arguments{
-\item{length}{Fork length in cm}
+\item{lengthf}{Fork length in cm}
+
+\item{sex}{Sex, 1=female, 2=male}
+
+\item{a.1}{a for females}
+
+\item{b.1}{b for females}
+
+\item{a.2}{a for males}
+
+\item{b.2}{b for males}
+
+\item{a.3}{a for unsexed fish}
+
+\item{b.3}{b for unsexed fish}
 }
 \value{
-weight weight
+weight Weight in lbs
 }
 \description{
-LengthWeight
+Length weight conversion
 }
 \examples{
 

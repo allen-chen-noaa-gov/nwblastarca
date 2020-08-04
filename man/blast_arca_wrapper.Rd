@@ -14,8 +14,6 @@ blast_arca_wrapper(MCMC = 1, firstyear, forecastyrs, dynamic.stocks)
 \item{forecastyrs}{Number of forecast years}
 
 \item{dynamic.stocks}{Names of stocks that change over time}
-
-\item{rootdir}{Working directory}
 }
 \value{
 tsout Time series of fisher catches, stock status, over forecast

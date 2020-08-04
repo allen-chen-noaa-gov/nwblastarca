@@ -8,9 +8,11 @@ GenLengthAgeKey(numbersatage, ALKey)
 }
 \arguments{
 \item{numbersatage}{Vector of current numbers at age}
+
+\item{ALKey}{DF of age-length-conversion w/ C1=LBins, C2=first age}
 }
 \value{
-tmp6 tmp6
+tmp6 Probability distribution of ages for each length class
 }
 \description{
 Organize the numbersatage and age-length-key

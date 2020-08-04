@@ -12,14 +12,14 @@ LengthWeight <- function(lengthf, sex, a.1, b.1, a.2, b.2, a.3, b.3) {
     #' @param a.3 a for unsexed fish
     #' @param b.3 b for unsexed fish
     #'
-    #' @return weight weight
+    #' @return weight Weight in lbs
     #' @export
     #' @examples
     #'
     
     if(sex==1) { 
     # parameters for females
-        <- a.1
+        a <- a.1
         b <- b.1
     } else if(sex==2) { 
     # parameters for males

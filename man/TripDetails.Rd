@@ -44,9 +44,86 @@ TripDetails(
 }
 \arguments{
 \item{curryear}{Current year}
+
+\item{currmonth}{Current month}
+
+\item{wave}{Current wave}
+
+\item{area}{Larger area definitions, OR or WA}
+
+\item{subarea}{Smaller area definitions (e.g. Puget Sound)}
+
+\item{boattype}{Current boat type charter or private}
+
+\item{boat.types}{All boat types charter and private}
+
+\item{triptype}{Current trip type (salmon or groundfish)}
+
+\item{catch.per.trip.prob.all}{Probability of number of fish caught per 
+trip}
+
+\item{dynamic.stocks}{Dynamic stocks to model}
+
+\item{fishing.area.subareas}{All subareas}
+
+\item{length.max.legal.all}{Maximum length of retention (by stock)}
+
+\item{length.min.legal.all}{Minimum length of retention (by stock)}
+
+\item{length.weight.params}{Length-weight conversion parameters}
+
+\item{lengths}{Length bins for dynamic stocks}
+
+\item{modeled.stock.rec.catch.source}{Mapping of sub-area stocks to 
+dynamic models}
+
+\item{NAL}{Numbers at length}
+
+\item{noncompliance.rate}{Rate of non-compliance with retention limits}
+
+\item{num.keep.legal.all}{Max number of fish retained by stock}
+
+\item{num.keep.legal.group.by.area}{Max number of fish retained by 
+species group}
+
+\item{opt.out.prob.by.area}{Opt out probability by area}
+
+\item{rec.sel.at.length}{Recreational selectivity at length}
+
+\item{release.mortality.rate}{Release mortality rate by stock}
+
+\item{stocks.model.pop.this.area}{Data loaded for stock population for
+this area}
+
+\item{stocks.rec.catch.by.area}{Recreational catches by area}
+
+\item{trip.cost.by.area}{Trip cost by area}
+
+\item{trip.type.utility.coefs}{Previously modeled utility coefficients
+for each trip type}
+
+\item{trip.types.by.area}{Trip options (bottomfish, salmon) by subarea}
+
+\item{utility.catch.weight.coefs}{Utility coefficients for catch weight}
+
+\item{utility.coefs}{Coefficients for utility model}
+
+\item{utlity.catch.squared.term.names}{Categories for quadratic utility 
+terms}
+
+\item{utlity.catch.term.names}{Categories for linear utility terms}
+
+\item{or.lingcod.bottomfish.catch.per.trip.model}{Catch model for Oregon
+lingcod that depends on stock status}
+
+\item{wa.lingcod.bottomfish.catch.per.trip.model}{Catch model for WA
+lingcod that depends on stock status}
+
+\item{wa.lingcod.salmon.catch.per.trip.model}{Jointcatch model for WA
+lingcod and salmon that depends on stock status}
 }
 \value{
-dataCompile: a data matrix
+List of catch info and trip utility
 }
 \description{
 Workhorse function used to identify choices and, subsequently, catches 

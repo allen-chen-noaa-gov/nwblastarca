@@ -8,12 +8,14 @@ CatchWeightsEachChoice(catch.lengths.stock.choice, length.weight.params.stock)
 }
 \arguments{
 \item{catch.lengths.stock.choice}{Kept and discarded fish by length}
+
+\item{length.weight.params.stock}{Length-weight parameters}
 }
 \value{
-choice.weights choice.weights
+choice.weights Kept and released weights
 }
 \description{
-CatchWeightsEachChoice
+Find catch weights
 }
 \examples{
 

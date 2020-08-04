@@ -20,12 +20,33 @@ DrawCatchAll(
 }
 \arguments{
 \item{catch.per.trip}{Number of fish caught}
+
+\item{compliant}{Is the trip compliant with regulations (T/F)}
+
+\item{num.keep.legal}{Bag limit for each stock}
+
+\item{num.keep.legal.group}{Bag limit for each species group}
+
+\item{length.min.legal.all}{Minimum legal length for all stocks}
+
+\item{length.max.legal.all}{Maximum legal length for all stocks}
+
+\item{rec.sel.at.length}{Recreational selectivity at length for all 
+stocks}
+
+\item{lengths}{Length bins for all stocks}
+
+\item{len.pop.female}{Number of females by length bin for all stocks}
+
+\item{len.pop.male}{Number of males by length bin for all stocks}
+
+\item{modeled.stock.rec.catch.source.subarea}{Subarea for modeled stock}
 }
 \value{
-catch.info catch.info
+catch.info Catch information
 }
 \description{
-DrawCatchAll
+Draw catch information
 }
 \examples{
 

@@ -23,12 +23,44 @@ CalculateUtility(
 }
 \arguments{
 \item{own.boat}{Own a boat? 0=no, 1=yes}
+
+\item{opt.out}{Opted out of fishing (T/F)}
+
+\item{utility.coefs}{Utility coefficients for economic model}
+
+\item{area}{Default NULL, OR or WA}
+
+\item{sub.area}{Default NULL, Sub-area within area}
+
+\item{type}{Default NULL, Trip type bottomfish or salmon}
+
+\item{catch.weights}{Default NULL, List of kept and discarded fish by 
+weight}
+
+\item{utility.catch.weight.coefs}{Default NULL, Utility coefficients for 
+economic model}
+
+\item{opt.out.prob}{Default NULL, Probabilty of opting out of fishing}
+
+\item{catch.weight.binned}{Default TRUE, Utility depends on weight bin 
+(T/F)}
+
+\item{trip.cost}{Default NULL, Costs of each potential trip type}
+
+\item{trip.type.utility.coefs.subarea}{Default NULL, Trip type utility 
+for this sub-area}
+
+\item{utlity.catch.term.names}{Default NULL, Stock categories for lineral 
+utility}
+
+\item{utlity.catch.squared.term.names}{Default NULL, Stock categories for 
+quadratic utility}
 }
 \value{
-utility utility
+utility Calculated utility
 }
 \description{
-CalculateUtility
+Calculate utility from recreational trips
 }
 \examples{
 

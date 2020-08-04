@@ -19,6 +19,10 @@ Set the directory you've downloaded the package into:
 Install:
 
     > install("nwblastarca", build_vignettes = FALSE)
+
+You can look at the documentation here:
+
+    > help(package = "nwblastarca")
     
 Run through the wrapper function (still in progress):
 
@@ -28,8 +32,8 @@ Run through the wrapper function (still in progress):
     > forecastyrs <- 2
     > dynamic.stocks <- c('WA.OR.lingcod')
 
-    > blast_arca_wrapper(firstyear = firstyear, forecastyrs = forecastyrs,
-        dynamic.stocks = dynamic.stocks)
+    > tsout <- blast_arca_wrapper(firstyear = firstyear, 
+        forecastyrs = forecastyrs, dynamic.stocks = dynamic.stocks)
 
 Currently outputs numbers at age and recreational catches for the dynamic 
 species.
