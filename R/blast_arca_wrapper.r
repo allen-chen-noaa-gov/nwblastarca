@@ -7,7 +7,6 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     #' @param MCMC Number of monte carlo runs per scenario
     #' @param firstyear First year of simulation
     #' @param forecastyrs Number of forecast years
-    #' @param rootdir Working directory
     #' @param dynamic.stocks Names of stocks that change over time
     #'
     #' @return tsout Time series of fisher catches, stock status, over forecast

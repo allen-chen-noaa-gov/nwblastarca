@@ -1,5 +1,5 @@
-init_dy_var <- function(dynamic.stocks) {
-    #' init_dy_var
+Init_dy_var <- function(dynamic.stocks) {
+    #' Init_dy_var
     #'
     #' Initialize dynamic variables for stocks
     #'
