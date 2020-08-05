@@ -4,7 +4,13 @@
 \alias{blast_arca_wrapper}
 \title{blast_arca_wrapper}
 \usage{
-blast_arca_wrapper(MCMC = 1, firstyear, forecastyrs, dynamic.stocks)
+blast_arca_wrapper(
+  MCMC = 1,
+  firstyear,
+  forecastyrs,
+  dynamic.stocks,
+  parallelr = FALSE
+)
 }
 \arguments{
 \item{MCMC}{Number of monte carlo runs per scenario}

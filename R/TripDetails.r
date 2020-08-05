@@ -1,8 +1,8 @@
 TripDetails <- function(curryear, currmonth, wave, area, subarea, boattype, 
     boat.types, triptype, catch.per.trip.prob.all, dynamic.stocks, 
-    fishing.area.subareas, length.max.legal.all, length.min.legal.all, 
+    length.max.legal.all, length.min.legal.all, 
     length.weight.params, lengths, modeled.stock.rec.catch.source, NAL,
-    noncompliance.rate, num.keep.legal.all,  num.keep.legal.group.by.area, 
+    noncompliance.rate, num.keep.legal.all, num.keep.legal.group.by.area, 
     opt.out.prob.by.area, rec.sel.at.length, release.mortality.rate, 
     stocks.model.pop.this.area, stocks.rec.catch.by.area, trip.cost.by.area,
     trip.type.utility.coefs, trip.types.by.area, utility.catch.weight.coefs,
@@ -26,7 +26,6 @@ TripDetails <- function(curryear, currmonth, wave, area, subarea, boattype,
     #' @param catch.per.trip.prob.all Probability of number of fish caught per 
     #' trip
     #' @param dynamic.stocks Dynamic stocks to model
-    #' @param fishing.area.subareas All subareas
     #' @param length.max.legal.all Maximum length of retention (by stock)
     #' @param length.min.legal.all Minimum length of retention (by stock)
     #' @param length.weight.params Length-weight conversion parameters
