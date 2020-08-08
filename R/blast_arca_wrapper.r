@@ -14,7 +14,7 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     #' @export
     #' @importFrom dplyr summarise group_by n
     #' @importFrom magrittr %>%
-    #' @importFrom foreach foreach %dopar%
+    #' @importFrom foreach foreach %dopar% getDoParWorkers
     #' @examples
     #'
     
@@ -149,20 +149,14 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
             } # END all stock loop
         } # END subarea loop
     } # END area loop
-
-    # Create objects to hold the sub-areas and trip types associated with each 
-    # utility vector and trips taken
-    utility.all.subareas <- NULL
-    utility.labels <- NULL
-    dynremoveout <- NULL
     
-    if (parallelr == TRUE) {
+    if (parallelr == TRUE && getDoParWorkers() > 1) {
         tsout <- foreach(nn = 1:MCMC, 
             .packages = c("nwblastarca")) %dopar% Bio_loop(simyears, firstyear, 
-            dynamic.stocks, spawnmonth, SSB, NAA, ageinfo, recrmonths, Recr, 
-            BH_steep, recrdev, recrfrac, NAL, ALK, Mortalities, sexes, CALcomm, 
-            ages, Fleets, past.trips.by.yearwaveareaboattype, areas, boat.types, 
-            subareas, trip.types.by.area, catch.per.trip.prob.all, 
+            dynamic.stocks, spawnmonth, SSB, SSB0, NAA, ageinfo, recrmonths,  
+            Recr, BH_steep, recrdev, recrfrac, NAL, ALK, Mortalities, sexes, 
+            CALcomm, ages, Fleets, past.trips.by.yearwaveareaboattype, areas, 
+            boat.types, subareas, trip.types.by.area, catch.per.trip.prob.all, 
             length.max.legal.all, length.min.legal.all, length.weight.params, 
             lengths, modeled.stock.rec.catch.source, noncompliance.rate, 
             num.keep.legal.all, num.keep.legal.group.by.area, 
@@ -177,8 +171,8 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     } else {
         for (nn in 1:MCMC) {    
         tsout[[nn]] <- Bio_loop(simyears, firstyear, dynamic.stocks, spawnmonth, 
-            SSB, NAA, ageinfo, recrmonths, Recr, BH_steep, recrdev, recrfrac,  
-            NAL, ALK, Mortalities, sexes, CALcomm, ages, Fleets, 
+            SSB, SSB0, NAA, ageinfo, recrmonths, Recr, BH_steep, recrdev, 
+            recrfrac,  NAL, ALK, Mortalities, sexes, CALcomm, ages, Fleets, 
             past.trips.by.yearwaveareaboattype, areas, boat.types, subareas, 
             trip.types.by.area, catch.per.trip.prob.all, length.max.legal.all, 
             length.min.legal.all, length.weight.params, lengths, 

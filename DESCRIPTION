@@ -14,6 +14,8 @@ Imports:
     dplyr,
     magrittr,
     pscl
+Suggests:
+    doParallel
 License: Do not distribute
 Encoding: UTF-8
 LazyData: true

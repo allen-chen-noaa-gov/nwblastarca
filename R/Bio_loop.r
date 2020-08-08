@@ -1,5 +1,5 @@
-Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, NAA,
-    ageinfo, recrmonths, Recr, BH_steep, recrdev, recrfrac, NAL, ALK, 
+Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
+    NAA, ageinfo, recrmonths, Recr, BH_steep, recrdev, recrfrac, NAL, ALK, 
     Mortalities, sexes, CALcomm, ages, Fleets, 
     past.trips.by.yearwaveareaboattype, areas, boat.types, subareas, 
     trip.types.by.area, catch.per.trip.prob.all, length.max.legal.all, 
@@ -22,6 +22,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, NAA,
     #' @param dynamic.stocks Names of stocks that change over time
     #' @param spawnmonth List of spawning months for each stock
     #' @param SSB Initialized spawning biomass for each stock
+    #' @param SSB0 Unfished spawning biomass parameter for each stock
     #' @param NAA Numbers at age to be simulated for each stock
     #' @param ageinfo Age information for each stock
     #' @param recrmonths Months of recruitment for each stock
@@ -79,6 +80,12 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, NAA,
     #' @examples
     #' 
   
+    # Create objects to hold the sub-areas and trip types associated with each 
+    # utility vector and trips taken
+    utility.all.subareas <- NULL
+    utility.labels <- NULL
+    dynremoveout <- NULL
+    
     ## Sub loop: time
     #Define time references
     for(timestep in 1:(12*length(simyears))) {
@@ -112,7 +119,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, NAA,
             
             LnR0 <- NULL
             #double check this is correct
-            LnR0[[stock]] <- 8.11666
+            LnR0[[stock]] <- 9.0669
             
             recrage <- ifelse(currmonth>=spawnmonth[[stock]],0,1)            
             # THIS CODE SPECIFIC TO SS 3.30!
@@ -409,7 +416,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, NAA,
     #(for each dynamic species) MORE EFFICIENT?
     # Only at end of wave to avoid duplication
     if(waveT == (currmonth/2)) {
-        for(area in fishing.areas) {
+        for(area in areas) {
         
         savedyncount <- 1
 
@@ -522,6 +529,8 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, NAA,
     
     if (length(dynremove) > 0) {
     
+    dynremovesave <- dynremove
+    
     #already in nextmonth    
     dynremove$Year <- nextyear
     dynremove$Month <- nextmonth
@@ -541,7 +550,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, NAA,
     # if (currmonth == 12) {
     # browser()
     # }
-    print(paste(curryear, currmonth))
+    # print(paste(curryear, currmonth))
     
     ## Convert population numbers from length- to age-classes 
     #(for each dynamic species)
@@ -596,11 +605,20 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, NAA,
     } # END dynamic stock loop
     ## End ageing branch
     
+    dynremovesave$Year <- curryear
+    dynremovesave$Month <- currmonth
+    dynremovesave$count <- dynremovesave$count*1000
+
     dynremoveout[[as.character(curryear)]][[as.character(currmonth)]] <- 
-        dynremove
+        dynremovesave
     
     } ## End time loop
     
+    
+    NAA$N <- unlist(NAA$N)
+    NAA <- NAA[NAA$Year <= simyears[length(simyears)],]
+    dynremoveout <- dynremoveout[dynremoveout$Year != 2019,]
+
     outlist <- list(NAA, dynremoveout)
     
     return(outlist)

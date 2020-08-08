@@ -10,6 +10,7 @@ Bio_loop(
   dynamic.stocks,
   spawnmonth,
   SSB,
+  SSB0,
   NAA,
   ageinfo,
   recrmonths,
@@ -64,6 +65,8 @@ Bio_loop(
 \item{spawnmonth}{List of spawning months for each stock}
 
 \item{SSB}{Initialized spawning biomass for each stock}
+
+\item{SSB0}{Unfished spawning biomass parameter for each stock}
 
 \item{NAA}{Numbers at age to be simulated for each stock}
 
