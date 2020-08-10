@@ -5,8 +5,8 @@ Plot_res <- function(blastres, MCMC, samplei = FALSE) {
     #'
     #' @param blastres Results from running the blast_arca_wrapper
     #' @param MCMC Number of Monte Carlo iterations
-    #' @param samplei Whether to draw a random iteration or default take the
-    #' mean
+    #' @param samplei Whether to draw a random single iteration or take the mean
+    #' of all the results (default)
     #'
     #' @return plotout Numbers at age plot and rec catches plot
     #' @export
@@ -21,8 +21,8 @@ Plot_res <- function(blastres, MCMC, samplei = FALSE) {
     NAAforplot <- as.data.frame(lapply(lapply(blastres, `[[`, 1), `[[`, 1)[
         sample(1:MCMC, 1)])
     } else {
-    NAAforplot <- as.data.frame(apply(simplify2array(lapply(lapply(blastres, 
-        `[[`, 1), `[[`, 1)), 1:2, mean))
+    NAAforplot <- as.data.frame(apply(simplify2array(lapply(lapply(lapply(
+        blastres, `[[`, 1), `[[`, 1), as.matrix)), 1:2, mean))
     }
     
     NAAout <- ggplot(NAAforplot) + 

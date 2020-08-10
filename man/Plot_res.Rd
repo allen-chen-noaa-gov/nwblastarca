@@ -11,8 +11,8 @@ Plot_res(blastres, MCMC, samplei = FALSE)
 
 \item{MCMC}{Number of Monte Carlo iterations}
 
-\item{samplei}{Whether to draw a random iteration or default take the
-mean}
+\item{samplei}{Whether to draw a random single iteration or take the mean
+of all the results (default)}
 }
 \value{
 plotout Numbers at age plot and rec catches plot

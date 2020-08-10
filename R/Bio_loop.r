@@ -412,6 +412,8 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
     saveall <- NULL
     dyncatch <- NULL
     dynremove <- NULL
+    dynremovesave <- NULL
+
     ## Calculate recreational catches (for all species) and mortality 
     #(for each dynamic species) MORE EFFICIENT?
     # Only at end of wave to avoid duplication
@@ -530,6 +532,9 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
     if (length(dynremove) > 0) {
     
     dynremovesave <- dynremove
+    dynremovesave$Year <- curryear
+    dynremovesave$Month <- currmonth
+    dynremovesave$count <- dynremovesave$count*1000
     
     #already in nextmonth    
     dynremove$Year <- nextyear
@@ -604,20 +609,15 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
         } # END end of year branch
     } # END dynamic stock loop
     ## End ageing branch
-    
-    dynremovesave$Year <- curryear
-    dynremovesave$Month <- currmonth
-    dynremovesave$count <- dynremovesave$count*1000
 
     dynremoveout[[as.character(curryear)]][[as.character(currmonth)]] <- 
         dynremovesave
     
     } ## End time loop
     
-    
-    NAA$N <- unlist(NAA$N)
-    NAA <- NAA[NAA$Year <= simyears[length(simyears)],]
-    dynremoveout <- dynremoveout[dynremoveout$Year != 2019,]
+    NAA[[dynamic.stocks]]$N <- unlist(NAA[[dynamic.stocks]]$N)
+    NAA[[dynamic.stocks]] <- NAA[[dynamic.stocks]][NAA[[dynamic.stocks]]$Year <= 
+        simyears[length(simyears)],]
 
     outlist <- list(NAA, dynremoveout)
     
