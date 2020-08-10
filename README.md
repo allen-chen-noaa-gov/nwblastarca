@@ -23,6 +23,9 @@ Install:
 You can look at the documentation here:
 
     > help(package = "nwblastarca")
+
+# Example #
+---
     
 Run through the wrapper function:
 
