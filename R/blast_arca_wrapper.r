@@ -150,7 +150,9 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
         } # END subarea loop
     } # END area loop
     
+    
     if (parallelr == TRUE && getDoParWorkers() > 1) {
+        print("Running in parallel")
         tsout <- foreach(nn = 1:MCMC, 
             .packages = c("nwblastarca")) %dopar% Bio_loop(simyears, firstyear, 
             dynamic.stocks, spawnmonth, SSB, SSB0, NAA, ageinfo, recrmonths,  
@@ -169,6 +171,8 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
             wa.lingcod.bottomfish.catch.per.trip.model, 
             wa.lingcod.salmon.catch.per.trip.model)
     } else {
+        print("Running sequentially")
+        tsout <- list()
         for (nn in 1:MCMC) {    
         tsout[[nn]] <- Bio_loop(simyears, firstyear, dynamic.stocks, spawnmonth, 
             SSB, SSB0, NAA, ageinfo, recrmonths, Recr, BH_steep, recrdev, 

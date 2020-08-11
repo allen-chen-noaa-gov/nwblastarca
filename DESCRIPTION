@@ -13,7 +13,9 @@ Imports:
     data.table,
     dplyr,
     magrittr,
-    pscl
+    pscl,
+    ggplot2,
+    RColorBrewer
 Suggests:
     doParallel
 License: Do not distribute

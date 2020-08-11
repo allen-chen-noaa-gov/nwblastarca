@@ -48,7 +48,7 @@ Init_dy_var <- function(dynamic.stocks) {
         outlist$ageinfo[[stock]] <- get(stock)$ageinfo
         outlist$ages[[stock]] <- get(stock)$ages
         outlist$ALK[[stock]] <- get(stock)$ALK
-        outlist$assessmentyear[[stock]] <- get(stock)$assessmenthyear
+        outlist$assessmentyear[[stock]] <- get(stock)$assessmentyear
         outlist$BH_steep[[stock]] <- get(stock)$BH_steep
         outlist$lbins[[stock]] <- get(stock)$lbins
         outlist$Mortalities[[stock]] <- get(stock)$Mortalities

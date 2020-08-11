@@ -118,7 +118,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
         if(currmonth %in% recrmonths[[stock]] & timestep!=1) {
             
             LnR0 <- NULL
-            #double check this is correct
+            #double check this is correct. Get rid of hard code.
             LnR0[[stock]] <- 9.0669
             
             recrage <- ifelse(currmonth>=spawnmonth[[stock]],0,1)            
@@ -189,8 +189,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
                 Mortalities[[stock]]$Fleet %in% 
                 Fleets$FleetName[which(Fleets$FleetType=="C")] &
                 Mortalities[[stock]]$Year==curryear & 
-                Mortalities[[stock]]$Sex==sexes[sex]),
-                -c(1:4)])/12)
+                Mortalities[[stock]]$Sex==sexes[sex]), -c(1:4)])/12)
           
             # Record catches
             for (fleet in Fleets$FleetName) {
@@ -210,8 +209,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
                     which(Mortalities[[stock]]$Type=="Fctch" & 
                     Mortalities[[stock]]$Fleet==fleet & 
                     Mortalities[[stock]]$Year==curryear &
-                    Mortalities[[stock]]$Sex==sexes[sex]),
-                    -c(1:4)]/12 * 
+                    Mortalities[[stock]]$Sex==sexes[sex]), -c(1:4)]/12 * 
                     (1-exp(-Zdead/12))/(Zdead/12)
                 
                 CALcomm[[stock]]$land[which(CALcomm[[stock]]$Year==curryear & 

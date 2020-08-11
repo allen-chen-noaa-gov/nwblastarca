@@ -41,7 +41,7 @@ Plot_res <- function(blastres, MCMC, samplei = FALSE) {
         do.call(rbind, blastres[[mc]][[2]][[2]])))
     }
             
-    if (samplei == TRUE) {
+    if (samplei == TRUE || MCMC == 1) {
         catchforplot <- as.data.frame(bindcatch[sample(1:MCMC, 1)])
     } else {
         catchforplot <- bindcatch[[1]]
