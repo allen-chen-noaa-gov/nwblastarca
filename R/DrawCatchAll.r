@@ -1,7 +1,7 @@
 DrawCatchAll <- function(catch.per.trip, compliant, num.keep.legal, 
     num.keep.legal.group, length.min.legal.all, length.max.legal.all, 
     rec.sel.at.length, lengths, len.pop.female, len.pop.male, 
-    modeled.stock.rec.catch.source.subarea) {
+    modeled.stock.rec.catch.source.subarea, wave) {
     #' DrawCatchAll
     #'
     #' Draw catch information
@@ -18,6 +18,7 @@ DrawCatchAll <- function(catch.per.trip, compliant, num.keep.legal,
     #' @param len.pop.female Number of females by length bin for all stocks
     #' @param len.pop.male Number of males by length bin for all stocks
     #' @param modeled.stock.rec.catch.source.subarea Subarea for modeled stock
+    #' @param wave Current wave
     #'
     #' @return catch.info Catch information
     #' @export
@@ -63,10 +64,10 @@ DrawCatchAll <- function(catch.per.trip, compliant, num.keep.legal,
     } else { 
     # If it's a dynamic stock, draw length and sex based on rec selectivity and 
     # current population
-      
+
         # Estimate the probability mass function of the length and sex of caught 
         # fish based on the current stock structure and recreational selectivity
-        rec.total.fishable.pop <- sum(rec.sel.at.length$Male * 
+        rec.total.fishable.pop <- sum(rec.sel.at.length[[stock]]$Male * 
             len.pop.male[[stock]]) + sum(rec.sel.at.length[[stock]]$Female * 
             len.pop.female[[stock]])
         length.caught.prob.male <- (rec.sel.at.length[[stock]]$Male * 
@@ -107,8 +108,8 @@ DrawCatchAll <- function(catch.per.trip, compliant, num.keep.legal,
     # the stock part of
     if(catch.length < length.min.legal.all[[stock]] ||
         catch.length > length.max.legal.all[[stock]] ||
-        length(catch.info[[stock]]$kept.lengths) >= num.keep.legal[[stock]] ||
-        at.group.limit) { 
+        length(catch.info[[stock]]$kept.lengths) >= 
+        num.keep.legal[[stock]][[wave]] || at.group.limit) { 
       
         catch.info[[stock]]$released.lengths <- c(
             catch.info[[stock]]$released.length, catch.length)

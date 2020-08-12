@@ -196,7 +196,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
                 Zdead <- Mortalities[[stock]][
                     which(Mortalities[[stock]]$Type=="Zdead" & 
                     Mortalities[[stock]]$Year==curryear & 
-                    Mortalities[[stock]]$Sex==sexes[sex]),-c(1:4)]/12
+                    Mortalities[[stock]]$Sex==sexes[sex]),-c(1:4)]
                 
                 CALcomm[[stock]]$catch[which(CALcomm[[stock]]$Year==curryear & 
                 CALcomm[[stock]]$Month==currmonth &
@@ -515,9 +515,19 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
             } # END boattype loop
         } # END area loop
         # Update NAL for dynamic stocks
-    
-    dyncatch <- data.frame(do.call(cbind, unlist(savedyn, recursive = FALSE)))
-    colnames(dyncatch) <- c("LBin", "Sex")
+
+    for(area in areas) {
+    tempcat <- list()
+    tempcat[[area]] <- savedyn[[area]]
+    if (is.null(do.call(cbind, unlist(tempcat, recursive = FALSE))) == TRUE) {
+    dyncatch[[area]] <- NULL    
+    } else{
+    dyncatch[[area]] <- data.frame(do.call(cbind, unlist(tempcat, 
+        recursive = FALSE)))
+    colnames(dyncatch[[area]]) <- c("LBin", "Sex")
+    }
+    }
+    dyncatch <- do.call(rbind,dyncatch)
 
     #NAL is in thousands! Because from SS
     dynremove <- data.frame(dyncatch %>%

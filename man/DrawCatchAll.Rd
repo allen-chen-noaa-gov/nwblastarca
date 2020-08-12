@@ -15,7 +15,8 @@ DrawCatchAll(
   lengths,
   len.pop.female,
   len.pop.male,
-  modeled.stock.rec.catch.source.subarea
+  modeled.stock.rec.catch.source.subarea,
+  wave
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ stocks}
 \item{len.pop.male}{Number of males by length bin for all stocks}
 
 \item{modeled.stock.rec.catch.source.subarea}{Subarea for modeled stock}
+
+\item{wave}{Current wave}
 }
 \value{
 catch.info Catch information

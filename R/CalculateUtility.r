@@ -111,7 +111,7 @@ CalculateUtility <- function(own.boat, opt.out, utility.coefs, area = NULL,
             
             }
         }
-        
+
         # Calculate the catch squared term for this stock
         utility.multipliers[which(utility.coefs$Variable1=='CatchSquared' & 
             utility.coefs$Variable2==

@@ -221,7 +221,8 @@ TripDetails <- function(curryear, currmonth, wave, area, subarea, boattype,
         len.pop.female = len.pop.female, 
         len.pop.male = len.pop.male,
         modeled.stock.rec.catch.source.subarea = 
-        modeled.stock.rec.catch.source[[area]][[subarea]])
+        modeled.stock.rec.catch.source[[area]][[subarea]],
+        wave = wave)
 
     # Calculate the weights of fish caught (kept and released) using the 
     # length-weight relationship
