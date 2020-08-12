@@ -5,6 +5,7 @@
 \title{Bio_loop}
 \usage{
 Bio_loop(
+  MCMC,
   simyears,
   firstyear,
   dynamic.stocks,
@@ -56,6 +57,8 @@ Bio_loop(
 )
 }
 \arguments{
+\item{MCMC}{Monte Carlo iteration}
+
 \item{simyears}{Years for simulation}
 
 \item{firstyear}{First year of simulation}

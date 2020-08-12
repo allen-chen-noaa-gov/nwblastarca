@@ -53,9 +53,11 @@ Currently outputs numbers at age and recreational catches for the dynamic
 species, and takes about 16 hours for 100 iterations with 8 workers (on an Intel
 i7-8700).
 
-We can use the included summary function to plot the results:
-
-    > plotout <- Plot_res(tsout, MCMC)
+We can use the included summary function to plot the results, where you can
+save the plots to a chosen directory if desired:
+    
+    > wd <- "J:/Fishperson/Directory_to_save_plots/"
+    > plotout <- Plot_res(tsout, MCMC, wd = wd, savep = TRUE)
 
     > plotout[[1]]
     > dev.new()

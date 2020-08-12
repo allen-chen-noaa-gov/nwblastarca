@@ -52,11 +52,17 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     simyears <- (firstyear):(firstyear+forecastyrs-1)
     simyearsplus <- (firstyear):(firstyear+forecastyrs)
 
-    NAA <- NAL <- SSB <- Recr <- recrdev <- CALcomm <- 
+    NAA <- NAL <- SSB <- Recr <- CALcomm <- 
         vector("list", length(dynamic.stocks))
-    names(NAA) <- names(NAL) <- names(SSB) <- names(Recr) <- names(recrdev) <- 
+    names(NAA) <- names(NAL) <- names(SSB) <- names(Recr) <- 
         names(CALcomm) <- dynamic.stocks
-
+    
+    recrdev <- vector("list", MCMC)
+    for (nn in 1:MCMC) {
+    recrdev[[nn]] <- vector("list", length(dynamic.stocks))
+    names(recrdev[[nn]]) <- dynamic.stocks
+    }
+    
     CALrec <- vector("list",length(areas))
     names(CALrec) <- areas
     for (area in areas) {
@@ -108,17 +114,18 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     }
       
     # Draw random recruitment deviations
-    recrdev[[stock]] <- data.frame(Year=simyears,
+    for (devit in 1:MCMC) {
+    recrdev[[devit]][[stock]] <- data.frame(Year=simyears,
         Dev={if(MCMC>1) {                 
         # ONLY USE IF RUNNING REPLICATE RUNS
         rnorm(length(simyears),mean=0,sd=sigmaR[[stock]])
         } else {rep(0,length(simyears))}})
+    }
     # END recrdevs draw
-      
+    
     # Set up commercial catches
     CALcomm[[stock]] <- expand.grid(Year=simyears,
         Month=1:12,
-        Fleet=Fleets$FleetName[which(Fleets$FleetType=="C")],
         Sex=sexes,
         LBin=lbins[[stock]]$Mean_Size,
         catch=NA,
@@ -131,6 +138,7 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     } # END dynamic stocks loop
 
     # But also for each stock's recreational catch
+    # THIS ISN'T CURRENTLY USED
     for(area in areas) {
         for(subarea in subareas[[area]]) {
             for (allstock in stocks.rec.catch.by.area[[area]][[subarea]]) {
@@ -154,13 +162,14 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     if (parallelr == TRUE && getDoParWorkers() > 1) {
         print("Running in parallel")
         tsout <- foreach(nn = 1:MCMC, 
-            .packages = c("nwblastarca")) %dopar% Bio_loop(simyears, firstyear, 
-            dynamic.stocks, spawnmonth, SSB, SSB0, NAA, ageinfo, recrmonths,  
-            Recr, BH_steep, recrdev, recrfrac, NAL, ALK, Mortalities, sexes, 
-            CALcomm, ages, Fleets, past.trips.by.yearwaveareaboattype, areas, 
-            boat.types, subareas, trip.types.by.area, catch.per.trip.prob.all, 
-            length.max.legal.all, length.min.legal.all, length.weight.params, 
-            lengths, modeled.stock.rec.catch.source, noncompliance.rate, 
+            .packages = c("nwblastarca")) %dopar% Bio_loop(nn, simyears, 
+            firstyear, dynamic.stocks, spawnmonth, SSB, SSB0, NAA, ageinfo, 
+            recrmonths, Recr, BH_steep, recrdev, recrfrac, NAL, ALK, 
+            Mortalities, sexes, CALcomm, ages, Fleets, 
+            past.trips.by.yearwaveareaboattype, areas, boat.types, subareas, 
+            trip.types.by.area, catch.per.trip.prob.all, length.max.legal.all, 
+            length.min.legal.all, length.weight.params, lengths, 
+            modeled.stock.rec.catch.source, noncompliance.rate, 
             num.keep.legal.all, num.keep.legal.group.by.area, 
             opt.out.prob.by.area, rec.sel.at.length, release.mortality.rate, 
             stocks.model.pop.this.area, stocks.rec.catch.by.area, 
@@ -174,13 +183,13 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
         print("Running sequentially")
         tsout <- list()
         for (nn in 1:MCMC) {    
-        tsout[[nn]] <- Bio_loop(simyears, firstyear, dynamic.stocks, spawnmonth, 
-            SSB, SSB0, NAA, ageinfo, recrmonths, Recr, BH_steep, recrdev, 
-            recrfrac,  NAL, ALK, Mortalities, sexes, CALcomm, ages, Fleets, 
-            past.trips.by.yearwaveareaboattype, areas, boat.types, subareas, 
-            trip.types.by.area, catch.per.trip.prob.all, length.max.legal.all, 
-            length.min.legal.all, length.weight.params, lengths, 
-            modeled.stock.rec.catch.source, noncompliance.rate, 
+        tsout[[nn]] <- Bio_loop(nn, simyears, firstyear, dynamic.stocks, 
+            spawnmonth, SSB, SSB0, NAA, ageinfo, recrmonths, Recr, BH_steep, 
+            recrdev, recrfrac,  NAL, ALK, Mortalities, sexes, CALcomm, ages, 
+            Fleets, past.trips.by.yearwaveareaboattype, areas, boat.types, 
+            subareas, trip.types.by.area, catch.per.trip.prob.all, 
+            length.max.legal.all, length.min.legal.all, length.weight.params, 
+            lengths, modeled.stock.rec.catch.source, noncompliance.rate, 
             num.keep.legal.all, num.keep.legal.group.by.area, 
             opt.out.prob.by.area, rec.sel.at.length, release.mortality.rate, 
             stocks.model.pop.this.area, stocks.rec.catch.by.area, 

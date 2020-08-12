@@ -1,5 +1,5 @@
-Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
-    NAA, ageinfo, recrmonths, Recr, BH_steep, recrdev, recrfrac, NAL, ALK, 
+Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB, 
+    SSB0, NAA, ageinfo, recrmonths, Recr, BH_steep, recrdev, recrfrac, NAL, ALK, 
     Mortalities, sexes, CALcomm, ages, Fleets, 
     past.trips.by.yearwaveareaboattype, areas, boat.types, subareas, 
     trip.types.by.area, catch.per.trip.prob.all, length.max.legal.all, 
@@ -17,6 +17,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
     #'
     #' Simulate bioeconomic model across years 
     #'
+    #' @param MCMC Monte Carlo iteration
     #' @param simyears Years for simulation
     #' @param firstyear First year of simulation
     #' @param dynamic.stocks Names of stocks that change over time
@@ -129,8 +130,8 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
                 (SSB0[[stock]]*(1-BH_steep[[stock]])+
                 SSB[[stock]]$SSB[which(SSB[[stock]]$Year==curryear)] * 
                 (5*BH_steep[[stock]]-1))) *
-                exp(recrdev[[stock]]$Dev[
-                which(recrdev[[stock]]$Year==curryear)])
+                exp(recrdev[[MCMC]][[stock]]$Dev[
+                which(recrdev[[MCMC]][[stock]]$Year==curryear)])
             for (sex in sexes) {
                 NAA[[stock]]$N[which(NAA[[stock]]$Year==curryear & 
                 NAA[[stock]]$Month==currmonth & 
@@ -190,13 +191,18 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
                 Fleets$FleetName[which(Fleets$FleetType=="C")] &
                 Mortalities[[stock]]$Year==curryear & 
                 Mortalities[[stock]]$Sex==sexes[sex]), -c(1:4)])/12)
-          
+
             # Record catches
             for (fleet in Fleets$FleetName) {
-                Zdead <- Mortalities[[stock]][
-                    which(Mortalities[[stock]]$Type=="Zdead" & 
-                    Mortalities[[stock]]$Year==curryear & 
-                    Mortalities[[stock]]$Sex==sexes[sex]),-c(1:4)]
+                Zdead <- (Mortalities[[stock]][which(
+                Mortalities[[stock]]$Type=="M" & 
+                Mortalities[[stock]]$Sex==sexes[sex]),-c(1:4)]) +
+                (colSums(Mortalities[[stock]][
+                which(Mortalities[[stock]]$Type=="Fdead" & 
+                Mortalities[[stock]]$Fleet %in% 
+                Fleets$FleetName[which(Fleets$FleetType=="C")] &
+                Mortalities[[stock]]$Year==curryear & 
+                Mortalities[[stock]]$Sex==sexes[sex]), -c(1:4)]))
                 
                 CALcomm[[stock]]$catch[which(CALcomm[[stock]]$Year==curryear & 
                 CALcomm[[stock]]$Month==currmonth &
@@ -223,8 +229,8 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
                     which(Mortalities[[stock]]$Type=="Fland" & 
                     Mortalities[[stock]]$Fleet==fleet &
                     Mortalities[[stock]]$Year==curryear &
-                    Mortalities[[stock]]$Sex==sexes[sex]),
-                    -c(1:4)]/12 * (1-exp(-Zdead/12))/(Zdead/12)
+                    Mortalities[[stock]]$Sex==sexes[sex]), -c(1:4)]/12 * 
+                    (1-exp(-Zdead/12))/(Zdead/12)
             } # END fleet loop and catch recording
         } # END sex loop
     } # END dynamic stock loop
@@ -627,7 +633,7 @@ Bio_loop <- function(simyears, firstyear, dynamic.stocks, spawnmonth, SSB, SSB0,
     NAA[[dynamic.stocks]] <- NAA[[dynamic.stocks]][NAA[[dynamic.stocks]]$Year <= 
         simyears[length(simyears)],]
 
-    outlist <- list(NAA, dynremoveout)
+    outlist <- list(NAA, dynremoveout, CALcomm)
     
     return(outlist)
 

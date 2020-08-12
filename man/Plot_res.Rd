@@ -4,12 +4,16 @@
 \alias{Plot_res}
 \title{Plot_res}
 \usage{
-Plot_res(blastres, MCMC, samplei = FALSE)
+Plot_res(blastres, MCMC, wd, savep = FALSE, samplei = FALSE)
 }
 \arguments{
 \item{blastres}{Results from running the blast_arca_wrapper}
 
 \item{MCMC}{Number of Monte Carlo iterations}
+
+\item{wd}{Working directory to save plots to}
+
+\item{savep}{Whether to save plots or not}
 
 \item{samplei}{Whether to draw a random single iteration or take the mean
 of all the results (default)}
