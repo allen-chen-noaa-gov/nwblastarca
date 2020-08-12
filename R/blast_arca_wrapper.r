@@ -126,6 +126,7 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     # Set up commercial catches
     CALcomm[[stock]] <- expand.grid(Year=simyears,
         Month=1:12,
+        Fleet=Fleets$FleetName,
         Sex=sexes,
         LBin=lbins[[stock]]$Mean_Size,
         catch=NA,
