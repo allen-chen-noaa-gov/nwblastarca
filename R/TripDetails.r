@@ -1,4 +1,4 @@
-TripDetails <- function(choice, curryear, currmonth, wave, area, subarea, boattype, 
+TripDetails <- function(curryear, currmonth, wave, area, subarea, boattype, 
     boat.types, triptype, catch.per.trip.prob.all, dynamic.stocks, 
     length.max.legal.all, length.min.legal.all, 
     length.weight.params, lengths, modeled.stock.rec.catch.source, NAL,
@@ -200,14 +200,6 @@ TripDetails <- function(choice, curryear, currmonth, wave, area, subarea, boatty
     } # END if else sub-areas
     ## END dynamic stock catch per trip
     
-    # #for testing
-    # if (area == "WA" && choice == 1) {
-# print(sum(catch.per.trip.prob.subsetted$WA.lingcod*0:
-    # (length(catch.per.trip.prob.subsetted$WA.lingcod)-1)))
-# } else if (area == "OR" && choice == 1) {
-# print(sum(catch.per.trip.prob.subsetted$OR.lingcod*0:
-    # (length(catch.per.trip.prob.subsetted$OR.lingcod)-1)))
-# }
     ## Generate catch info
     # Draw the catch for this trip for each stock
     catch.per.trip <- sapply(stocks.rec.catch.by.area[[area]][[subarea]],

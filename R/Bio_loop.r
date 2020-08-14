@@ -237,7 +237,7 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
     ## End commercial fishing and natural mortality
 
     init.choices.by.waveareaboattype <- 100       
-browser()
+
     ## At the beginning of each year, calculate recreational trips by wave, 
     # area, boattype, subarea, and triptype
     if(currmonth==1) {
@@ -267,13 +267,10 @@ browser()
                         
                         utility.all.choices <- NULL
                         
-                        # #fortesting
-                        # print(paste(wave, area, boattype, subarea, triptype, 
-                        # sep = " "))
                         for (choice in 1:init.choices.by.waveareaboattype) {
                         # Call function to draw catch from trip and report trip 
                         #characteristics
-                        trip.info <- TripDetails(choice,curryear,
+                        trip.info <- TripDetails(curryear,
                             currmonth,
                             wave,
                             area,
@@ -453,11 +450,10 @@ browser()
                             predsave[[waveT]][[area]][[boattype]]$Opt.Out))
     
                         if (choiceitersn != 0) {
-print(choiceitersn)                        
                         for (choice in 1:choiceitersn) { 
                         # Call function to draw catch from trip and report trip 
                         #characteristics
-                        trip.info <- TripDetails(choice,curryear,
+                        trip.info <- TripDetails(curryear,
                             currmonth,
                             waveT,
                             area,
