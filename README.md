@@ -57,7 +57,7 @@ We can use the included summary function to plot the results, where you can
 save the plots to a chosen directory if desired:
     
     > wd <- "J:/Fishperson/Directory_to_save_plots/"
-    > plotout <- Plot_res(tsout, MCMC, wd = wd, savep = TRUE)
+    > plotout <- Plot_res(tsout, MCMC, wd = wd, savep = TRUE, samplei = TRUE)
 
     > plotout[[1]]
     > dev.new()

@@ -5,6 +5,7 @@
 \title{TripDetails}
 \usage{
 TripDetails(
+  choice,
   curryear,
   currmonth,
   wave,

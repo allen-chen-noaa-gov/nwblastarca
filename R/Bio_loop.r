@@ -237,7 +237,7 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
     ## End commercial fishing and natural mortality
 
     init.choices.by.waveareaboattype <- 100       
-
+browser()
     ## At the beginning of each year, calculate recreational trips by wave, 
     # area, boattype, subarea, and triptype
     if(currmonth==1) {
@@ -250,7 +250,9 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
     # Adjust the year so 1 is most recent, etc
     choice.occasions$Year <- max(choice.occasions$Year) - 
         choice.occasions$Year + 1
-        
+    
+    predsave <- NULL
+    
     for (wave in 1:6) {
         for (area in areas) {
             for (boattype in boat.types) {
@@ -265,10 +267,13 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
                         
                         utility.all.choices <- NULL
                         
+                        # #fortesting
+                        # print(paste(wave, area, boattype, subarea, triptype, 
+                        # sep = " "))
                         for (choice in 1:init.choices.by.waveareaboattype) {
                         # Call function to draw catch from trip and report trip 
                         #characteristics
-                        trip.info <- TripDetails(curryear,
+                        trip.info <- TripDetails(choice,curryear,
                             currmonth,
                             wave,
                             area,
@@ -354,9 +359,8 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
     
             for(j in trip.types.by.area[[area]][[subarea]][[wave]]) { 
             # for each trip type
-      
             # Identify the column of trip.probs with data for this sub-area and 
-            #trip type
+            # trip type
             trip.probs.col <- which(utility.labels[1,]==i & 
                 utility.labels[2,]==j)
       
@@ -370,7 +374,6 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
   
             total.trips.predicted$Opt.Out <- init.choices.by.waveareaboattype - 
                 fishing.trips
-            
             #use 2014 most recent year to extrapolate
             year <- 1
             choice.index <- which(choice.occasions$Year==year & 
@@ -382,10 +385,16 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
                 total.trips.predicted$Opt.Out)/
                 sum(unlist(total.trips.predicted))
             
+            predsave[[as.character(wave)]][[area]][[boattype]] <- 
+                total.trips.predicted
+            
             } # END boattype loop
         } # END area loop
     } # END wave loop
     
+    #This end block finds number of choice occasions given that some end up in
+    #opting out, e.g. there are more choices than trips because some ended up
+    #opting out
     choice.years <- 1
     # Convert proportion of each activity into numbers using total trips taken
     choice.occasions$Choices[which(choice.occasions$Year %in% 
@@ -408,7 +417,6 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
     choice.occasions.choices <- choice.occasions[order(choice.occasions$Wave, 
         -xtfrm(choice.occasions$Area), 
         choice.occasions$BoatType),]
-    
     } # END beginning of year branch
     ## End trip calculations
 
@@ -428,11 +436,10 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
 
             for (boattype in boat.types) {
             
-                choiceiters <- round(choice.occasions$Choices[
+                choiceiters <- choice.occasions$Choices[
                     choice.occasions$Wave == waveT & 
                     choice.occasions$Area == area &
-                    choice.occasions$BoatType == boattype]/
-                    length(sapply(trip.types.by.area[[area]], "[[", waveT)))
+                    choice.occasions$BoatType == boattype]
                 
                 for (subarea in subareas[[area]]) {
                     for (triptype in 
@@ -441,14 +448,16 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
                         savecatch <- NULL
                         saveutil <- NULL
                         
-                        if (choice.occasions$Choices[
-                        choice.occasions$Wave == waveT & 
-                        choice.occasions$Area == area &
-                        choice.occasions$BoatType == boattype] != 0) {                   
-                        for (choice in 1:choiceiters) { 
+                        choiceitersn <- round(choiceiters*predsave[[waveT]][[
+                            area]][[boattype]][[subarea]][[triptype]]/(100-
+                            predsave[[waveT]][[area]][[boattype]]$Opt.Out))
+    
+                        if (choiceitersn != 0) {
+print(choiceitersn)                        
+                        for (choice in 1:choiceitersn) { 
                         # Call function to draw catch from trip and report trip 
                         #characteristics
-                        trip.info <- TripDetails(curryear,
+                        trip.info <- TripDetails(choice,curryear,
                             currmonth,
                             waveT,
                             area,
