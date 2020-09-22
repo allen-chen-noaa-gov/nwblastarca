@@ -2,7 +2,7 @@ NWFSC BLAST/ARCA model
 =========
 ---
 
-If you run into problems you can contact allen.chen@noaa.gov
+If you run into problems you can contact allen.chen@noaa.gov. This is a work in progress and should not be used for management!
 
 # Installation #
 ---
