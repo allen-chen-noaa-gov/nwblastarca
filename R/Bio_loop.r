@@ -64,7 +64,6 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
     #' @param trip.cost.by.area Trip cost by area
     #' @param trip.type.utility.coefs Previously modeled utility coefficients
     #' for each trip type
-    #' @param utility.catch.weight.coefs Utility coefficients for catch weight
     #' @param utility.coefs Coefficients for utility model
     #' @param utlity.catch.squared.term.names Categories for quadratic utility 
     #' terms
@@ -270,7 +269,8 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
                         for (choice in 1:init.choices.by.waveareaboattype) {
                         # Call function to draw catch from trip and report trip 
                         #characteristics
-                        trip.info <- TripDetails(curryear,
+                        trip.info <- TripDetails(
+                            curryear,
                             currmonth,
                             wave,
                             area,
@@ -297,7 +297,6 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
                             trip.cost.by.area,
                             trip.type.utility.coefs,
                             trip.types.by.area,
-                            utility.catch.weight.coefs,
                             utility.coefs,
                             utlity.catch.squared.term.names,
                             utlity.catch.term.names,
@@ -452,7 +451,8 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
                         if (choiceitersn != 0) {
                         for (choice in 1:choiceitersn) { 
                         # Call function to draw catch from trip and report trip 
-                        #characteristics
+                        #characteristics 
+    
                         trip.info <- TripDetails(curryear,
                             currmonth,
                             waveT,
@@ -480,7 +480,6 @@ Bio_loop <- function(MCMC, simyears, firstyear, dynamic.stocks, spawnmonth, SSB,
                             trip.cost.by.area,
                             trip.type.utility.coefs,
                             trip.types.by.area,
-                            utility.catch.weight.coefs,
                             utility.coefs,
                             utlity.catch.squared.term.names,
                             utlity.catch.term.names,

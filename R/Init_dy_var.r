@@ -1,4 +1,4 @@
-Init_dy_var <- function(dynamic.stocks) {
+Init_dy_var <- function(dynamic.stocks, WA.OR.lingcod) {
     #' Init_dy_var
     #'
     #' Initialize dynamic variables for stocks
@@ -40,11 +40,12 @@ Init_dy_var <- function(dynamic.stocks) {
     names(outlist$SSB0) <- dynamic.stocks
     outlist$WeightConversion <- vector("list", length(dynamic.stocks))
     names(outlist$WeightConversion) <- dynamic.stocks
-    
+
     for(stock in dynamic.stocks) {
-        load(system.file("extdata", paste(stock, ".RData", sep=""), 
-            package = "nwblastarca"))
+        # load(system.file("extdata", paste(stock, ".RData", sep=""), 
+            # package = "nwblastarca"))
         # Convert dynamic stock data into common lists
+        # stock <- dynstock
         outlist$ageinfo[[stock]] <- get(stock)$ageinfo
         outlist$ages[[stock]] <- get(stock)$ages
         outlist$ALK[[stock]] <- get(stock)$ALK

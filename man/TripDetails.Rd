@@ -32,7 +32,6 @@ TripDetails(
   trip.cost.by.area,
   trip.type.utility.coefs,
   trip.types.by.area,
-  utility.catch.weight.coefs,
   utility.coefs,
   utlity.catch.squared.term.names,
   utlity.catch.term.names,
@@ -42,19 +41,20 @@ TripDetails(
 )
 }
 \arguments{
-\item{curryear}{Current year}
+\item{curryear}{Current year (num length 1)}
 
-\item{currmonth}{Current month}
+\item{currmonth}{Current month (num length 1)}
 
-\item{wave}{Current wave}
+\item{wave}{Current wave (num length 1)}
 
-\item{area}{Larger area definitions, OR or WA}
+\item{area}{Larger area definitions (e.g. OR or WA, num length 1)}
 
-\item{subarea}{Smaller area definitions (e.g. Puget Sound)}
+\item{subarea}{Smaller area definitions (e.g. Puget Sound, num length 1)}
 
-\item{boattype}{Current boat type charter or private}
+\item{boattype}{Current boat type charter or private (num length 1)}
 
-\item{boat.types}{All boat types charter and private}
+\item{boat.types}{All possible boat types (e.g. charter and private, list
+of length n = number of boat types)}
 
 \item{triptype}{Current trip type (salmon or groundfish)}
 
@@ -100,8 +100,6 @@ this area}
 for each trip type}
 
 \item{trip.types.by.area}{Trip options (bottomfish, salmon) by subarea}
-
-\item{utility.catch.weight.coefs}{Utility coefficients for catch weight}
 
 \item{utility.coefs}{Coefficients for utility model}
 

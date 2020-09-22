@@ -1,12 +1,34 @@
-TripDetails <- function(curryear, currmonth, wave, area, subarea, boattype, 
-    boat.types, triptype, catch.per.trip.prob.all, dynamic.stocks, 
-    length.max.legal.all, length.min.legal.all, 
-    length.weight.params, lengths, modeled.stock.rec.catch.source, NAL,
-    noncompliance.rate, num.keep.legal.all, num.keep.legal.group.by.area, 
-    opt.out.prob.by.area, rec.sel.at.length, release.mortality.rate, 
-    stocks.model.pop.this.area, stocks.rec.catch.by.area, trip.cost.by.area,
-    trip.type.utility.coefs, trip.types.by.area, utility.catch.weight.coefs,
-    utility.coefs, utlity.catch.squared.term.names, utlity.catch.term.names,
+TripDetails <- function(
+    curryear, 
+    currmonth, 
+    wave, 
+    area, 
+    subarea, 
+    boattype, 
+    boat.types, 
+    triptype, 
+    catch.per.trip.prob.all, 
+    dynamic.stocks, 
+    length.max.legal.all, 
+    length.min.legal.all, 
+    length.weight.params, 
+    lengths, 
+    modeled.stock.rec.catch.source, 
+    NAL,
+    noncompliance.rate, 
+    num.keep.legal.all, 
+    num.keep.legal.group.by.area, 
+    opt.out.prob.by.area, 
+    rec.sel.at.length, 
+    release.mortality.rate, 
+    stocks.model.pop.this.area, 
+    stocks.rec.catch.by.area, 
+    trip.cost.by.area,
+    trip.type.utility.coefs,
+    trip.types.by.area, 
+    utility.coefs, 
+    utlity.catch.squared.term.names, 
+    utlity.catch.term.names,
     or.lingcod.bottomfish.catch.per.trip.model, 
     wa.lingcod.bottomfish.catch.per.trip.model, 
     wa.lingcod.salmon.catch.per.trip.model) {
@@ -15,13 +37,14 @@ TripDetails <- function(curryear, currmonth, wave, area, subarea, boattype,
     #' Workhorse function used to identify choices and, subsequently, catches 
     #' within a wave-area combination
     #'
-    #' @param curryear Current year
-    #' @param currmonth Current month
-    #' @param wave Current wave
-    #' @param area Larger area definitions, OR or WA
-    #' @param subarea Smaller area definitions (e.g. Puget Sound)
-    #' @param boattype Current boat type charter or private
-    #' @param boat.types All boat types charter and private
+    #' @param curryear Current year (num length 1)
+    #' @param currmonth Current month (num length 1)
+    #' @param wave Current wave (num length 1)
+    #' @param area Larger area definitions (e.g. OR or WA, num length 1)
+    #' @param subarea Smaller area definitions (e.g. Puget Sound, num length 1)
+    #' @param boattype Current boat type charter or private (num length 1)
+    #' @param boat.types All possible boat types (e.g. charter and private, list
+    #' of length n = number of boat types)
     #' @param triptype Current trip type (salmon or groundfish)
     #' @param catch.per.trip.prob.all Probability of number of fish caught per 
     #' trip
@@ -47,7 +70,6 @@ TripDetails <- function(curryear, currmonth, wave, area, subarea, boattype,
     #' @param trip.type.utility.coefs Previously modeled utility coefficients
     #' for each trip type
     #' @param trip.types.by.area Trip options (bottomfish, salmon) by subarea
-    #' @param utility.catch.weight.coefs Utility coefficients for catch weight
     #' @param utility.coefs Coefficients for utility model
     #' @param utlity.catch.squared.term.names Categories for quadratic utility 
     #' terms
@@ -241,7 +263,6 @@ TripDetails <- function(curryear, currmonth, wave, area, subarea, boattype,
         own.boat = boattype, 
         catch.weights = catch.weights, 
         utility.coefs = utility.coefs, 
-        utility.catch.weight.coefs = utility.catch.weight.coefs, 
         opt.out.prob = opt.out.prob.by.area[[area]],
         catch.weight.binned = TRUE,
         trip.cost = trip.cost.by.area[[area]][[subarea]],

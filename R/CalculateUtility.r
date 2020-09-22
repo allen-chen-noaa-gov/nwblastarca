@@ -95,20 +95,20 @@ CalculateUtility <- function(own.boat, opt.out, utility.coefs, area = NULL,
             } else {
             # Estimate the utility coefficient for this stock and weight using 
             # the Michaelis-Menten relationship
-            weight.coef <- as.numeric(MichaelisMenten(
-                catch.weights.stock[weight], 
-                utility.catch.weight.coefs[
-                    which(rownames(utility.catch.weight.coefs)==
-                    utlity.catch.term.names[[stock]]), 1], 
-                utility.catch.weight.coefs[
-                    which(rownames(utility.catch.weight.coefs)==
-                    utlity.catch.term.names[[stock]]), 2]))
+            # weight.coef <- as.numeric(MichaelisMenten(
+                # catch.weights.stock[weight], 
+                # utility.catch.weight.coefs[
+                    # which(rownames(utility.catch.weight.coefs)==
+                    # utlity.catch.term.names[[stock]]), 1], 
+                # utility.catch.weight.coefs[
+                    # which(rownames(utility.catch.weight.coefs)==
+                    # utlity.catch.term.names[[stock]]), 2]))
             
-            # Save the utility coefficient
-            index <- which(utility.coefs$Variable1=='ContinuousCatchCoefs')
-            utility.multipliers[index] <- utility.multipliers[index] + 
-                weight.coef
-            
+            # # Save the utility coefficient
+            # index <- which(utility.coefs$Variable1=='ContinuousCatchCoefs')
+            # utility.multipliers[index] <- utility.multipliers[index] + 
+                # weight.coef
+            stop("Error")
             }
         }
 

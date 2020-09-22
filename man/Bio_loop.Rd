@@ -146,8 +146,6 @@ this area}
 \item{trip.type.utility.coefs}{Previously modeled utility coefficients
 for each trip type}
 
-\item{utility.catch.weight.coefs}{Utility coefficients for catch weight}
-
 \item{utility.coefs}{Coefficients for utility model}
 
 \item{utlity.catch.squared.term.names}{Categories for quadratic utility 

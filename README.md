@@ -63,5 +63,5 @@ save the plots to a chosen directory if desired:
     > dev.new()
     > plotout[[2]]
 
-![Numbers at age](https://nwcgit.nwfsc.noaa.gov/achen/nwblastarca/-/raw/master/inst/rdme/NAA.png)
-![Recreational catches](https://nwcgit.nwfsc.noaa.gov/achen/nwblastarca/-/raw/master/inst/rdme/reccatches.png)
+![Numbers at age](https://github.com/allen-chen-noaa-gov/nwblastarca/tree/master/inst/rdme/NAA.png)
+![Recreational catches](https://github.com/allen-chen-noaa-gov/nwblastarca/tree/master/inst/rdme/reccatches.png)

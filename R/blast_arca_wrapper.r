@@ -1,5 +1,6 @@
 blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, 
-    dynamic.stocks, parallelr = FALSE) {
+    stocks.rec.catch.by.area, datain, dynamic.stocks = NULL, 
+    parallelr = FALSE, ...) {
     #' blast_arca_wrapper
     #'
     #' Wrapper function for recreational bioeconomic model
@@ -7,7 +8,10 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     #' @param MCMC Number of monte carlo runs per scenario
     #' @param firstyear First year of simulation
     #' @param forecastyrs Number of forecast years
+    #' @param stocks.rec.catch.by.area 
+    #' @param datain
     #' @param dynamic.stocks Names of stocks that change over time
+    #' @param parallelr Whether to run iterations in parallel (default FALSE)
     #'
     #' @return tsout Time series of fisher catches, stock status, over forecast
     #' years
@@ -18,31 +22,8 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     #' @examples
     #'
     
-    #Likely these should go as inputs, leave for now.
-    # 1=female, 2=male
-    sexes <- c(1,2)
-    fishing.areas <- c("WA","OR")
-    # C=commercial, R=recreational
-    Fleets <- data.frame(FleetType=c("C","C","R","R"),          
-        FleetArea=c("WA.OR","WA.OR","WA","OR"),
-        FleetNum=1:4,
-        FleetName=c("1_N_TRAWL","2_N_FIX","3_WA_REC","4_OR_REC"),
-        stringsAsFactors=FALSE)
-    
-    #### Set up and read in data
-    # Initialize dynamic stock variables
-
-    stockvars <- Init_dy_var(dynamic.stocks)
+    stockvars <- Init_dy_var(dynamic.stocks, lingcod.dynstock)
     list2env(stockvars, environment())
-    
-    # Load and process key data
-    load(system.file("extdata", "Regulations.RData", package = "nwblastarca"))
-    load(system.file("extdata", "CPT CAL.RData", package = "nwblastarca"))
-    load(system.file("extdata", "Utility.RData", package = "nwblastarca"))
-    load(system.file("extdata", "Structural.RData", package = "nwblastarca"))
-    
-    #sel here is wrong, need to change data
-    rec.sel.at.length$PS.lingcod <- c(rec.sel.at.length$PS.lingcod, rep(0,6))
 
     areas <- names(stocks.rec.catch.by.area)
     subareas <- vector("list",length(areas))
@@ -82,6 +63,15 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     names(num.available.to.rec.fishery) <- names(len.pop.female) <- 
         names(len.pop.male) <- dynamic.stocks
 
+    # list2env(lingcod.dynstock, environment())
+    sexes <- c(1,2)
+    list2env(datain, environment())
+    list2env(Modelinfo, environment())
+    list2env(Regulations, environment())
+    list2env(Catchinfo, environment())
+    list2env(Utility, environment())
+    list2env(Stockinfo, environment())
+    spawnmonth <- recrmonths
     ## Initialize population data structures
     # Mostly for each dynamic species
     for (stock in dynamic.stocks) {
@@ -138,39 +128,17 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
       
     } # END dynamic stocks loop
 
-    # But also for each stock's recreational catch
-    # THIS ISN'T CURRENTLY USED
-    for(area in areas) {
-        for(subarea in subareas[[area]]) {
-            for (allstock in stocks.rec.catch.by.area[[area]][[subarea]]) {
-            # Set up rec catches for all species, dynamic and static
-            CALrec[[area]][[subarea]][[allstock]] <- 
-                expand.grid(Year=simyears,
-                Month=1:12,
-                Fleet=Fleets$FleetName[which(Fleets$FleetType=="R" & 
-                    Fleets$FleetArea==area)],
-                Area=area,
-                Subarea=subarea,
-                Sex=sexes,
-                LBin=lengths[[allstock]],
-                catch=NA,
-                land=NA)
-            } # END all stock loop
-        } # END subarea loop
-    } # END area loop
-    
-    
     if (parallelr == TRUE && getDoParWorkers() > 1) {
         print("Running in parallel")
         tsout <- foreach(nn = 1:MCMC, 
-            .packages = c("nwblastarca")) %dopar% Bio_loop(nn, simyears, 
-            firstyear, dynamic.stocks, spawnmonth, SSB, SSB0, NAA, ageinfo, 
-            recrmonths, Recr, BH_steep, recrdev, recrfrac, NAL, ALK, 
-            Mortalities, sexes, CALcomm, ages, Fleets, 
-            past.trips.by.yearwaveareaboattype, areas, boat.types, subareas, 
-            trip.types.by.area, catch.per.trip.prob.all, length.max.legal.all, 
-            length.min.legal.all, length.weight.params, lengths, 
-            modeled.stock.rec.catch.source, noncompliance.rate, 
+            .packages = c("nwblastarca")) %dopar% Bio_loop(nn, simyears, firstyear, 
+            dynamic.stocks, 
+            spawnmonth, SSB, SSB0, NAA, ageinfo, recrmonths, Recr, BH_steep, 
+            recrdev, recrfrac,  NAL, ALK, Mortalities, sexes, CALcomm, ages, 
+            Fleets, past.trips.by.yearwaveareaboattype, areas, boat.types, 
+            subareas, trip.types.by.area, catch.per.trip.prob.all, 
+            length.max.legal.all, length.min.legal.all, length.weight.params, 
+            lengths, modeled.stock.rec.catch.source, noncompliance.rate, 
             num.keep.legal.all, num.keep.legal.group.by.area, 
             opt.out.prob.by.area, rec.sel.at.length, release.mortality.rate, 
             stocks.model.pop.this.area, stocks.rec.catch.by.area, 

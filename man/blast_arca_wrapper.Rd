@@ -8,8 +8,11 @@ blast_arca_wrapper(
   MCMC = 1,
   firstyear,
   forecastyrs,
-  dynamic.stocks,
-  parallelr = FALSE
+  stocks.rec.catch.by.area,
+  datain,
+  dynamic.stocks = NULL,
+  parallelr = FALSE,
+  ...
 )
 }
 \arguments{
@@ -19,7 +22,11 @@ blast_arca_wrapper(
 
 \item{forecastyrs}{Number of forecast years}
 
+\item{stocks.rec.catch.by.area}{}
+
 \item{dynamic.stocks}{Names of stocks that change over time}
+
+\item{parallelr}{Whether to run iterations in parallel (default FALSE)}
 }
 \value{
 tsout Time series of fisher catches, stock status, over forecast
