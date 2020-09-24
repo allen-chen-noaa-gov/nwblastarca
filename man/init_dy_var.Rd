@@ -4,7 +4,7 @@
 \alias{Init_dy_var}
 \title{Init_dy_var}
 \usage{
-Init_dy_var(dynamic.stocks, WA.OR.lingcod)
+Init_dy_var(dynamic.stocks, indat)
 }
 \arguments{
 \item{dynamic.stocks}{Names of dynamic stocks}

@@ -21,8 +21,8 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     #' @importFrom foreach foreach %dopar% getDoParWorkers
     #' @examples
     #'
-    
-    stockvars <- Init_dy_var(dynamic.stocks, lingcod.dynstock)
+
+    stockvars <- Init_dy_var(dynamic.stocks, indat = ...)
     list2env(stockvars, environment())
 
     areas <- names(stocks.rec.catch.by.area)

@@ -1,4 +1,5 @@
-Plot_res <- function(blastres, MCMC, wd, savep = FALSE, samplei = FALSE) {
+Plot_res <- function(blastres, MCMC, wd = NULL, savep = FALSE, 
+    samplei = FALSE) {
     #' Plot_res
     #'
     #' Plot results

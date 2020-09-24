@@ -36,8 +36,16 @@ Run through the wrapper function:
     > dynamic.stocks <- c('WA.OR.lingcod')
     > MCMC <- 100
 
+    > filename <- system.file("extdata/lingcod", package = "nwblastarca")
+    > WA.OR.lingcod.dynstock <- Read_SS(filename)
+
+    > data(StocksRecCatchByArea)
+    > data(NWdata)
+    
     > tsout <- blast_arca_wrapper(MCMC = MCMC, firstyear = firstyear, 
-        forecastyrs = forecastyrs, dynamic.stocks = dynamic.stocks)
+    forecastyrs = forecastyrs, stocks.rec.catch.by.area = StocksRecCatchByArea, 
+    datain = NWdata, dynamic.stocks = dynamic.stocks, 
+    dynstock = list(WA.OR.lingcod.dynstock = WA.OR.lingcod.dynstock))
 
 If you want to run it in parallel you need to register your workers first, for
 example:
