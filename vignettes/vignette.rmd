@@ -53,5 +53,5 @@ save the plots to a chosen directory if desired:
     > dev.new()
     > plotout[[2]]
 
-![Numbers at age](NAA.png)
-![Recreational catches](reccatches.png)
+![Numbers at age](NAA.png){width=50%}
+![Recreational catches](reccatches.png){width=50%}
