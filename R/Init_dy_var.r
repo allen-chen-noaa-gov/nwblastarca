@@ -9,7 +9,7 @@ Init_dy_var <- function(dynamic.stocks, indat) {
     #' @export
     #' @examples
     #'
-    
+        
     outlist <- list()
     
     outlist$ageinfo <- vector("list", length(dynamic.stocks))

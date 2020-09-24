@@ -11,6 +11,7 @@ blast_arca_wrapper(
   stocks.rec.catch.by.area,
   datain,
   dynamic.stocks = NULL,
+  dynstock,
   parallelr = FALSE,
   ...
 )

@@ -1,5 +1,5 @@
 blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs, 
-    stocks.rec.catch.by.area, datain, dynamic.stocks = NULL, 
+    stocks.rec.catch.by.area, datain, dynamic.stocks = NULL, dynstock,
     parallelr = FALSE, ...) {
     #' blast_arca_wrapper
     #'
@@ -9,8 +9,9 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     #' @param firstyear First year of simulation
     #' @param forecastyrs Number of forecast years
     #' @param stocks.rec.catch.by.area 
-    #' @param datain
+    #' @param datain Data needed to run model
     #' @param dynamic.stocks Names of stocks that change over time
+    #' @param dynstock Stock information for dynamic species (if exists)
     #' @param parallelr Whether to run iterations in parallel (default FALSE)
     #'
     #' @return tsout Time series of fisher catches, stock status, over forecast
@@ -22,7 +23,7 @@ blast_arca_wrapper <- function(MCMC = 1, firstyear, forecastyrs,
     #' @examples
     #'
 
-    stockvars <- Init_dy_var(dynamic.stocks, indat = ...)
+    stockvars <- Init_dy_var(dynamic.stocks, indat = dynstock)
     list2env(stockvars, environment())
 
     areas <- names(stocks.rec.catch.by.area)

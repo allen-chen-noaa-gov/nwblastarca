@@ -4,7 +4,7 @@
 \alias{Plot_res}
 \title{Plot_res}
 \usage{
-Plot_res(blastres, MCMC, wd, savep = FALSE, samplei = FALSE)
+Plot_res(blastres, MCMC, wd = NULL, savep = FALSE, samplei = FALSE)
 }
 \arguments{
 \item{blastres}{Results from running the blast_arca_wrapper}
