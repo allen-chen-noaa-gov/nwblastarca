@@ -15,7 +15,8 @@ Imports:
     magrittr,
     pscl,
     ggplot2,
-    RColorBrewer
+    RColorBrewer,
+    r4ss
 Suggests:
     doParallel,
     knitr,
