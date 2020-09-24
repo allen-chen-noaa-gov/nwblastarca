@@ -16,7 +16,8 @@ Imports:
     pscl,
     ggplot2,
     RColorBrewer,
-    r4ss
+    r4ss,
+    foreach
 Suggests:
     doParallel,
     knitr,
