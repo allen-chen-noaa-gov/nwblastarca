@@ -2,7 +2,7 @@ NWFSC BLAST/ARCA model
 =========
 ---
 
-If you run into problems you can contact allen.chen@noaa.gov
+If you run into problems you can contact allen.chen@noaa.gov. This is a work in progress and should not be used for management!
 
 # Installation #
 ---
@@ -71,5 +71,5 @@ save the plots to a chosen directory if desired:
     > dev.new()
     > plotout[[2]]
 
-![Numbers at age](https://github.com/allen-chen-noaa-gov/nwblastarca/tree/master/inst/rdme/NAA.png)
-![Recreational catches](https://github.com/allen-chen-noaa-gov/nwblastarca/tree/master/inst/rdme/reccatches.png)
+![Numbers at age](/inst/rdme/NAA.png)
+![Recreational catches](/inst/rdme/reccatches.png)
