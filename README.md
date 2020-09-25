@@ -43,9 +43,9 @@ Run through the wrapper function:
     > data(NWdata)
     
     > tsout <- blast_arca_wrapper(MCMC = MCMC, firstyear = firstyear, 
-    forecastyrs = forecastyrs, stocks.rec.catch.by.area = StocksRecCatchByArea, 
-    datain = NWdata, dynamic.stocks = dynamic.stocks, 
-    dynstock = list(WA.OR.lingcod.dynstock = WA.OR.lingcod.dynstock))
+        forecastyrs = forecastyrs, stocks.rec.catch.by.area = StocksRecCatchByArea, 
+        datain = NWdata, dynamic.stocks = dynamic.stocks, 
+        dynstock = list(WA.OR.lingcod.dynstock = WA.OR.lingcod.dynstock))
 
 If you want to run it in parallel you need to register your workers first, for
 example:
@@ -54,7 +54,9 @@ example:
     > registerDoParallel(cores = 8)
         
     > tsout <- blast_arca_wrapper(MCMC = MCMC, firstyear = firstyear, 
-        forecastyrs = forecastyrs, dynamic.stocks = dynamic.stocks, 
+        forecastyrs = forecastyrs, stocks.rec.catch.by.area = StocksRecCatchByArea, 
+        datain = NWdata, dynamic.stocks = dynamic.stocks, 
+        dynstock = list(WA.OR.lingcod.dynstock = WA.OR.lingcod.dynstock),
         parallel = TRUE)
 
 Currently outputs numbers at age and recreational catches for the dynamic 

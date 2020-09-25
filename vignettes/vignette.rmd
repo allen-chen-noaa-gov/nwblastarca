@@ -25,9 +25,9 @@ Run through the wrapper function:
     > data(NWdata)
     
     > tsout <- blast_arca_wrapper(MCMC = MCMC, firstyear = firstyear, 
-    forecastyrs = forecastyrs, stocks.rec.catch.by.area = StocksRecCatchByArea, 
-    datain = NWdata, dynamic.stocks = dynamic.stocks, 
-    dynstock = list(WA.OR.lingcod.dynstock = WA.OR.lingcod.dynstock))
+        forecastyrs = forecastyrs, stocks.rec.catch.by.area = StocksRecCatchByArea, 
+        datain = NWdata, dynamic.stocks = dynamic.stocks, 
+        dynstock = list(WA.OR.lingcod.dynstock = WA.OR.lingcod.dynstock))
 
 If you want to run it in parallel you need to register your workers first, for
 example:
@@ -36,7 +36,9 @@ example:
     > registerDoParallel(cores = 8)
         
     > tsout <- blast_arca_wrapper(MCMC = MCMC, firstyear = firstyear, 
-        forecastyrs = forecastyrs, dynamic.stocks = dynamic.stocks, 
+        forecastyrs = forecastyrs, stocks.rec.catch.by.area = StocksRecCatchByArea, 
+        datain = NWdata, dynamic.stocks = dynamic.stocks, 
+        dynstock = list(WA.OR.lingcod.dynstock = WA.OR.lingcod.dynstock),
         parallel = TRUE)
 
 Currently outputs numbers at age and recreational catches for the dynamic 
@@ -55,3 +57,13 @@ save the plots to a chosen directory if desired:
 
 ![Numbers at age](NAA.png){width=50%}
 ![Recreational catches](reccatches.png){width=50%}
+
+You can play around and explore the data used and the different options. The data
+is roughly structured as model info, catch info, regulations, stock info, and 
+utility (fisher) data. For example in regulations you can set the maximum legal
+length for species:
+
+    > str(NWdata$Regulations$length.max.legal.all)
+    > NWdata$Regulations$length.max.legal.all$WA.lingcod <- 80
+    
+What if you changed regulations?
