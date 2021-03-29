@@ -25,7 +25,11 @@ blast_arca_wrapper(
 
 \item{stocks.rec.catch.by.area}{}
 
+\item{datain}{Data needed to run model}
+
 \item{dynamic.stocks}{Names of stocks that change over time}
+
+\item{dynstock}{Stock information for dynamic species (if exists)}
 
 \item{parallelr}{Whether to run iterations in parallel (default FALSE)}
 }
